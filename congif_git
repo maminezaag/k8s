@@ -1,0 +1,490 @@
+
+ 
+git config --global user.name "ton_pseudo"
+git config --global user.email "ton.email@example.com"
+ 
+ 
+ 
+✅ Étape 3 : Choisis la méthode selon ton cas 
+ 
+🔹 Cas 1 : Le dépôt GitHub est vide (nouveau repo sans fichiers) 
+
+Tu veux créer un dépôt local et le lier à GitHub. 
+
+    Crée un dossier pour ton projet :
+     
+
+bash
+ 
+ 
+1
+2
+mkdir mon-projet
+cd mon-projet
+ 
+ 
+
+    Initialise un dépôt Git local :
+     
+
+bash
+ 
+ 
+1
+git init
+ 
+ 
+
+    Crée un fichier (ex: README.md) :
+     
+
+bash
+ 
+ 
+1
+echo "# Mon Projet" > README.md
+ 
+ 
+
+    Ajoute les fichiers et fais ton premier commit :
+     
+
+bash
+ 
+ 
+1
+2
+git add .
+git commit -m "Premier commit"
+ 
+ 
+
+    Lie ton dépôt local à GitHub (remplace par ton URL) :
+     
+
+bash
+ 
+ 
+1
+git remote add origin https://github.com/ton-utilisateur/mon-repo.git
+ 
+ 
+
+    Envoie ton code sur GitHub :
+     
+
+bash
+ 
+ 
+1
+2
+git branch -M main
+git push -u origin main
+ 
+ 
+
+✅ C’est bon ! Ton code est sur GitHub. 
+ 
+🔹 Cas 2 : Le dépôt GitHub existe déjà (avec des fichiers comme README, .gitignore, etc.) 
+
+Alors tu dois cloner le dépôt : 
+bash
+ 
+ 
+1
+2
+git clone https://github.com/ton-utilisateur/mon-repo.git
+cd mon-repo
+ 
+ 
+
+Ensuite, tu peux ajouter des fichiers, modifier, puis : 
+bash
+ 
+ 
+1
+2
+3
+git add .
+git commit -m "Mes modifications"
+git push
+ 
+ 
+ 
+🔐 Astuce : Utiliser un token si tu as une erreur d'authentification 
+
+Depuis août 2021, GitHub ne permet plus l'authentification avec mot de passe via HTTPS. Tu dois utiliser un Personal Access Token (PAT). 
+
+👉 Va sur : https://github.com/settings/tokens 
+Crée un token avec le droit repo. 
+
+Puis, quand Git te demande le mot de passe, entre le token à la place du mot de passe. 
+ 
+✅ Vérification finale 
+
+Pour vérifier que tout est bien lié : 
+bash
+ 
+ 
+1
+git remote -v
+ 
+ 
+
+Tu devrais voir : 
+ 
+ 
+1
+2
+origin  https://github.com/ton-utilisateur/mon-repo.git (fetch)
+origin  https://github.com/ton-utilisateur/mon-repo.git (push)
+ 
+ 
+ 
+
+Si tu me donnes l’URL de ton dépôt GitHub, je peux te donner les commandes exactes à copier-coller. 😊 
+
+Bon courage ! 
+ 
+ 
+✅ Option 2 : Utiliser SSH (recommandé à moyen terme) 
+
+Tu as utilisé : 
+bash
+ 
+ 
+1
+git remote add origin git@github.com:maminezaag/k8s.git
+ 
+ 
+
+C’est une URL SSH → elle nécessite une clé SSH configurée. 
+1. Génère une clé SSH (si tu n’en as pas) 
+bash
+ 
+ 
+1
+ssh-keygen -t ed25519 -C "maminezaag@example.com"
+ 
+ 
+
+Appuie sur Entrée pour toutes les questions (ou choisis un mot de passe optionnel). 
+
+    Cela crée 2 fichiers : 
+
+        ~/.ssh/id_ed25519 (clé privée)
+        ~/.ssh/id_ed25519.pub (clé publique)
+         
+
+     
+
+2. Ajoute la clé publique à SSH agent 
+bash
+ 
+ 
+1
+2
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+ 
+ 
+3. Copie la clé publique 
+bash
+ 
+ 
+1
+cat ~/.ssh/id_ed25519.pub
+ 
+ 
+
+→ Copie toute la ligne (commence par ssh-ed25519 ...) 
+4. Ajoute-la à ton compte GitHub 
+
+    Va sur https://github.com/settings/ssh_and_gpg_keys 
+    Clique sur "New SSH key"
+    Titre : kmaster-linux
+    Colle ta clé
+    Clique sur Add SSH key
+     
+
+5. Teste la connexion 
+bash
+ 
+ 
+1
+ssh -T git@github.com
+ 
+ 
+
+→ Tu devrais voir : 
+ 
+ 
+1
+Hi maminezaag! You've successfully authenticated, but GitHub does not provide shell access.
+ 
+ 
+
+✅ Si c’est bon, alors : 
+bash
+ 
+ 
+1
+git push -u origin main
+ 
+ 
+
+devrait fonctionner sans mot de passe. 
+ 
+✅ Résumé : Que faire maintenant ? 
+
+Tu as deux choix : 
+🔹 Choix rapide (recommandé maintenant) : Passer à HTTPS 
+bash
+ 
+ 
+1
+2
+git remote set-url origin https://github.com/maminezaag/k8s.git
+git push -u origin main
+ 
+ 
+
+Puis entre : 
+
+    Username : maminezaag
+    Password : 🖐️ colle ton Personal Access Token
+     
+
+ 
+🔹 Choix propre (à faire plus tard) : Configurer SSH 
+
+Une fois que tu as créé et ajouté ta clé SSH à GitHub, tu peux revenir à SSH : 
+bash
+ 
+ 
+1
+2
+git remote set-url origin git@github.com:maminezaag/k8s.git
+git push -u origin main
+ 
+ 
+ 
+✅ Vérifie que tout marche 
+
+Après avoir poussé : 
+bash
+ 
+ 
+1
+git status
+ 
+ 
+
+Doit dire que tout est à jour. 
+
+Et va sur : https://github.com/maminezaag/k8s  → tu devrais voir ton README.md. 
+ 
+
+Si tu veux, je peux t’aider à créer le token ou générer la clé SSH étape par étape. Dis-moi ce que tu préfères ! 😊 
+ 
+ 
+
+Tu as une incohérence dans la configuration de ton dépôt Git, ce qui explique pourquoi tu es redemandé un mot de passe (ou token) malgré que tu aies correctement configuré SSH. 
+ 
+🔍 Analyse de la situation 
+
+Tu as fait : 
+bash
+ 
+ 
+1
+ssh -T git@github.com
+ 
+ 
+
+Et tu as obtenu : 
+ 
+ 
+1
+Hi maminezaag/k8s! You've successfully authenticated...
+ 
+ 
+
+✅ Cela signifie que SSH est bien configuré et fonctionne. 
+
+➡️ Tu devrais pouvoir pousser avec git@github.com:... sans mot de passe. 
+ 
+
+Mais quand tu fais : 
+bash
+ 
+ 
+1
+git push
+ 
+ 
+
+Git te demande : 
+ 
+ 
+1
+Username for 'https://github.com':
+ 
+ 
+
+🚨 Cela veut dire que ton dépôt local est configuré pour utiliser HTTPS, pas SSH. 
+ 
+❌ Problème : Ton remote origin utilise HTTPS, pas SSH 
+
+Même si tu as fait git remote add origin git@github.com:... plus tôt, il est probable que : 
+
+    Soit tu l’as changé après coup
+    Soit un git clone ou set-url a mis l’URL en HTTPS
+     
+
+ 
+✅ Solution : Vérifie et corrige l’URL du remote 
+
+    Vérifie l’URL actuelle de ton remote :
+     
+
+bash
+ 
+ 
+1
+git remote -v
+ 
+ 
+
+👉 Tu vas probablement voir : 
+ 
+ 
+1
+2
+origin  https://github.com/maminezaag/k8s.git (fetch)
+origin  https://github.com/maminezaag/k8s.git (push)
+ 
+ 
+
+➡️ C’est HTTPS, pas SSH. 
+ 
+
+    Corrige en passant à SSH :
+     
+
+bash
+ 
+ 
+1
+git remote set-url origin git@github.com:maminezaag/k8s.git
+ 
+ 
+ 
+
+    Vérifie que c’est bien pris en compte :
+     
+
+bash
+ 
+ 
+1
+git remote -v
+ 
+ 
+
+Maintenant, tu devrais voir : 
+ 
+ 
+1
+2
+origin  git@github.com:maminezaag/k8s.git (fetch)
+origin  git@github.com:maminezaag/k8s.git (push)
+ 
+ 
+ 
+
+    Fais ton push :
+     
+
+bash
+ 
+ 
+1
+git push -u origin main
+ 
+ 
+
+✅ Cette fois, pas de demande de mot de passe : SSH utilisera ta clé privée pour s’authentifier. 
+ 
+🔁 Résumé des commandes à exécuter 
+bash
+ 
+ 
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+# Vérifie l'URL actuelle
+git remote -v
+
+# Change l'URL pour utiliser SSH
+git remote set-url origin git@github.com:maminezaag/k8s.git
+
+# Vérifie que c'est bien changé
+git remote -v
+
+# Pousse le code (sans mot de passe)
+git push -u origin main
+ 
+ 
+ 
+💡 Astuce : Comment savoir si une URL est SSH ou HTTPS ? 
+
+    SSH : git@github.com:maminezaag/k8s.git → utilise ta clé SSH
+    HTTPS : https://github.com/maminezaag/k8s.git → demande un token (jamais ton mot de passe GitHub)
+     
+
+ 
+
+✅ Une fois l’URL en SSH, plus besoin de token ni de mot de passe : l’authentification se fait automatiquement avec ta clé privée. 
+
+Tu devrais maintenant pouvoir pousser sans être embêté ! 😊 
+ 
+ 
+
+telechrger cette conversation en fichiers text
+ 
+  
+ 
+ 
+ 
+profile
+Qwen3-235B-A22B-2507
+
+Je ne peux pas directement te permettre de télécharger un fichier, mais je peux générer pour toi le contenu complet de la conversation au format texte, que tu pourras facilement copier et enregistrer comme fichier .txt sur ton ordinateur. 
+
+Voici les étapes : 
+ 
+✅ 1. Copie tout le texte ci-dessous (de --- à ---) 
+ 
+ 
+1
+2
+3
+Conversation avec l'assistant - Fichier texte
+
+Utilisateur : j ai cree un nouveau repos sur github , je suis sur linux et je souhaite utl
+ 
+ 
+ 
+By messaging Qwen, you agree to our Terms of Service and have read our Privacy Policy.
+AI-generated content may not be accurate.
+Qwen
+
