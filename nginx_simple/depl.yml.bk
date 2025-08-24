@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      topologySpreadConstraints:  # Configuration de la répartition
+      - maxSkew: 1               # Différence maximum de 1 pod entre les nœuds
+        topologyKey: kubernetes.io/hostname
+        schedulingMode: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app: nginx
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
